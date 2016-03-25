@@ -1,0 +1,9 @@
+# IDE files #
+.idea
+*.iml
+
+out
+.gradle
+gradle
+build
+bower_components

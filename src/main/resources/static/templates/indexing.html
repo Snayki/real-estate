@@ -1,0 +1,11 @@
+<div ng-init="init()">
+    <label> Виберіть місто:
+        <select class="form-control" ng-model="selectedCity">
+            <option value="">Не вибрано</option>
+            <option ng-repeat="city in availableCities" value="{{city}}">{{ city }}</option>
+        </select>
+    </label>
+
+    <button class="btn btn-primary" ng-click="index()" ng-disabled="!selectedCity || indexingInProgress">Розпочати Індексацію</button>
+</div>
+

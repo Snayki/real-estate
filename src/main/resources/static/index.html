@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html ng-app="app" ng-cloak>
+<head>
+	<title>Your's ToDo List</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="bower_components/bootstrap-additions/dist/bootstrap-additions.min.css">
+	<link rel="stylesheet" href="bower_components/angular-growl-3/build/angular-growl.min.css">
+	<link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.min.css">
+	<link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.min.css">
+	<link rel="stylesheet" href="bower_components/ui-select/dist/select.min.css">
+	<link rel="stylesheet" href="bower_components/angular-motion/dist/angular-motion.min.css">
+	<link rel="stylesheet" href="app.css">
+
+	<script src="bower_components/lodash/dist/lodash.min.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+	<script src="bower_components/angular-animate/angular-animate.js"></script>
+	<script src="bower_components/angular-sanitize/angular-sanitize.min.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="bower_components/angular-resource/angular-resource.js"></script>
+	<script src="bower_components/angular-growl-3/build/angular-growl.js"></script>
+	<script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
+	<script src="bower_components/ng-table/dist/ng-table.min.js"></script>
+	<script src="bower_components/ui-select/dist/select.min.js"></script>
+	<script src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
+	<script src="bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
+
+	<script src="app.js"></script>
+    <script src="services/adService.js"></script>
+    <script src="controllers/indexingController.js"></script>
+    <script src="controllers/resultController.js"></script>
+
+</head>
+<body>
+<div>
+	<div class="container">
+		<header>
+			<div class="navbar navbar-default" role="navigation" bs-navbar>
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" ui-sref="home">Real Estate</a>
+					</div>
+
+					<ul class="nav navbar-nav navbar-right">
+						<li ui-sref-active="active"><a ui-sref="home">Головна</a></li>
+                        <li ui-sref-active="active"><a ui-sref="indexing">Індексація</a></li>
+                        <li ui-sref-active="active"><a ui-sref="result">Результати</a></li>
+					</ul>
+				</div>
+			</div>
+		</header>
+
+		<div>
+			<div class="growl-container">
+				<div growl></div>
+			</div>
+
+			<div class="main-content col-lg-12" ui-view></div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
