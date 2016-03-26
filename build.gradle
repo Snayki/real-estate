@@ -34,10 +34,6 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
 
-//	compile('com.fasterxml.jackson.core:jackson-core:2.7.3')
-//	compile('com.fasterxml.jackson.core:jackson-databind:2.7.3')
-//	compile('com.fasterxml.jackson.core:jackson-annotations:2.7.3')
-
 	compile('org.jsoup:jsoup:1.8.3')
 
 	testCompile('org.springframework.boot:spring-boot-starter-test') 
