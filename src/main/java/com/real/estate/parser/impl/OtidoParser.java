@@ -9,7 +9,10 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -21,18 +24,19 @@ public class OtidoParser implements Parser<Ad> {
 
     public static final String EXPRESSION = "(\\d)-[кімн]+.+\\s(\\d+)/\\d+/(.).+\\s(\\d+)/(\\d+)/\\d+.*\\s(\\d+)[грн]+\\s\\((\\d+)\\)";
     public static final String URL = "http://otido.ua/main.php?l=112";
+    public static final String LINK_EXSPRESSION = "a[href^=main.php?l=112]";
     public static final Pattern PATTERN = Pattern.compile(EXPRESSION, Pattern.UNICODE_CHARACTER_CLASS);
     public static final String MOZILLA = "Mozilla/5.0 (Macintosh; U; Intel Mac OS X; de-de) AppleWebKit/523.10.3 (KHTML, like Gecko) Version/3.0.4 Safari/523.10";
+    public static final String JSOUP_SEARCH_EXPRESSION = "td:not(:has(td)):matches(%s)";
 
     public List<Element> parse() {
 
         try {
             Document doc = Jsoup.connect(URL).get();
-//            Set<String> links = doc.select("a[href^=main.php?l=112]").stream()
-//                    .map(link -> link.attr("abs:href"))
-//                    .collect(Collectors.toSet());
+            Set<String> links = doc.select(LINK_EXSPRESSION).stream()
+                    .map(link -> link.attr("abs:href"))
+                    .collect(Collectors.toSet());
 
-            Set<String> links = new HashSet<>();
             links.add(URL);
 
             return links.stream()
@@ -43,14 +47,14 @@ public class OtidoParser implements Parser<Ad> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return Collections.emptyList();
     }
 
     private List<Element> retrieveElementsFormUrl(String url) {
-        Document doc = null;
         try {
-            doc = Jsoup.connect(URL).userAgent(MOZILLA).get();
-            return doc.select(String.format("td:not(:has(td)):matches(%s)", EXPRESSION));
+            Document doc = Jsoup.connect(url).userAgent(MOZILLA).get();
+            return doc.select(String.format(JSOUP_SEARCH_EXPRESSION, EXPRESSION));
         } catch (IOException e) {
             e.printStackTrace();
         }

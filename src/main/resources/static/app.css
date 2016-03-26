@@ -8,21 +8,6 @@
     margin-bottom: 60px;
 }
 
-.main-footer {
-    height: 34px;
-    padding: 5px 16px;
-    font-size: 12px;
-    border-radius: 4px 4px 0 0;
-    border-color: #e7e7e7;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 1px 5px rgba(0, 0, 0, 0.075);
-    margin-top: 35px;
-    background-color: #bdbdbd;
-    background: -webkit-linear-gradient(top, #ffffff, #f8f8f8);
-    background: -moz-linear-gradient(top, #ffffff, #f8f8f8);
-    background: -ms-linear-gradient(top, #ffffff, #f8f8f8);
-    background: -o-linear-gradient(top, #ffffff, #f8f8f8);
-}
-
 .navbar-nav.navbar-right .btn {
     position: relative;
     z-index: 2;

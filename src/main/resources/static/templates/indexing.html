@@ -1,11 +1,17 @@
 <div ng-init="init()">
-    <label> Виберіть місто:
-        <select class="form-control" ng-model="selectedCity">
-            <option value="">Не вибрано</option>
-            <option ng-repeat="city in availableCities" value="{{city}}">{{ city }}</option>
-        </select>
-    </label>
 
-    <button class="btn btn-primary" ng-click="index()" ng-disabled="!selectedCity || indexingInProgress">Розпочати Індексацію</button>
+    <div class="col-lg-6">
+        <label for="city">Виберіть місто *</label>
+
+        <div id="city" class="row">
+            <ui-select class="col-lg-8" ng-model="$parent.selectedCity">
+                <ui-select-match allow-clear="false" placeholder="{{$select.selected || 'Виберіть Місто...'}}">{{$select.selected}}</ui-select-match>
+                <ui-select-choices repeat="city in availableCities | filter:$select.search">
+                    <span title="{{city}}" ng-bind-html="city | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+            <button class="col-lg-4 btn btn-primary" ng-click="index()" ng-disabled="!selectedCity || indexingInProgress">Розпочати Індексацію</button>
+        </div>
+    </div>
 </div>
 

@@ -6,6 +6,7 @@ import com.real.estate.domain.Ad;
 import com.real.estate.domain.City;
 import com.real.estate.domain.Material;
 import com.real.estate.service.AdService;
+import com.real.estate.utils.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 
+import static com.real.estate.utils.Constants.CITY;
+import static com.real.estate.utils.Constants.FILTER_QUERY;
+
 /**
  * Created by Snayki on 21.03.2016.
  */
@@ -29,7 +33,7 @@ public class HomeController {
     private AdService adService;
 
     @RequestMapping(value = "index", method = RequestMethod.GET)
-    public void indexCity(@RequestParam(value = "city") String cityName) {
+    public void indexCity(@RequestParam(value = CITY) String cityName) {
         City city = City.cityOf(cityName);
         adService.indexAds(city);
     }
@@ -45,8 +49,8 @@ public class HomeController {
     }
 
     @RequestMapping(value = "data", method = RequestMethod.GET)
-    public Page<Ad> getAds(@PageableDefault(size = 5) Pageable page,
-                           @RequestParam(value = "filterQuery", required = false) String query) throws IOException {
+    public Page<Ad> getAds(@PageableDefault(size = Constants.PAGE_SIZE) Pageable page,
+                           @RequestParam(value = FILTER_QUERY, required = false) String query) throws IOException {
         JsonNode searchQuery = new ObjectMapper().readTree(query);
         return adService.findAll(page, searchQuery);
     }

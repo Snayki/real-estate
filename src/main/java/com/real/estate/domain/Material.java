@@ -26,7 +26,7 @@ public enum Material {
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
     public static Material create(JsonNode json) {
-        for (Material material: values()) {
+        for (Material material : values()) {
             if (material.getName().equals(json.asText())) {
                 return material;
             }
@@ -56,7 +56,7 @@ public enum Material {
     }
 
     public static Material materialOf(String code) {
-        for (Material material: values()) {
+        for (Material material : values()) {
             if (material.getCode().equals(code)) {
                 return material;
             }

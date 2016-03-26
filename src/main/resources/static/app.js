@@ -17,8 +17,7 @@ angular.module('app').config(function ($stateProvider, $urlRouterProvider, $http
 
     $stateProvider.state('home', {
         url: '/home',
-        templateUrl: 'templates/home.html',
-        controller: 'HomeController'
+        templateUrl: 'templates/home.html'
     });
 
     $stateProvider.state('indexing', {

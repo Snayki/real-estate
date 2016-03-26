@@ -2,24 +2,29 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
-            <form>
-                <div class="form-group col-lg-3">
-                    <label for="city">Місто</label>
+            <div class="form-group col-lg-3">
+                <label for="city">Місто *</label>
 
-                    <div id="city">
-                        <ui-select ng-model="tableParams.filter().city">
-                            <ui-select-match allow-clear="true" placeholder="{{$select.selected.displayValue || 'Виберіть Місто...'}}">{{$select.selected.displayValue}}</ui-select-match>
-                            <ui-select-choices repeat="item.filter as item in availableCities | filter: {displayValue: $select.search}">
-                                <span title="{{item.displayValue}}" ng-bind-html="item.displayValue | highlight: $select.search"></span>
-                            </ui-select-choices>
-                        </ui-select>
-                    </div>
+                <div id="city">
+                    <ui-select ng-model="tableParams.filter().city" on-select="selectCity($item, $model)">
+                        <ui-select-match allow-clear="false" placeholder="{{$select.selected.displayValue || 'Виберіть Місто...'}}">{{$select.selected.displayValue}}</ui-select-match>
+                        <ui-select-choices repeat="item.filter as item in availableCities | filter: {displayValue: $select.search}">
+                            <span title="{{item.displayValue}}" ng-bind-html="item.displayValue | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <form>
                 <div class="form-group col-lg-3">
                     <label for="numberOfRooms">Кількість Кімнат</label>
 
                     <div id="numberOfRooms">
-                        <ui-select ng-model="tableParams.filter().numberOfRooms">
+                        <ui-select ng-model="tableParams.filter().numberOfRooms" ng-disabled="!selectedCity">
                             <ui-select-match allow-clear="true" placeholder="{{$select.selected.displayValue || 'Виберіть Кількість Кімнат...'}}">{{$select.selected.displayValue}}</ui-select-match>
                             <ui-select-choices repeat="item.filter as item in numberOfRooms | filter: {displayValue: $select.search}">
                                 <span title="{{item.displayValue}}" ng-bind-html="item.displayValue | highlight: $select.search"></span>
@@ -31,7 +36,7 @@
                     <label for="typeOfMaterial">Тип Матеріалу</label>
 
                     <div id="typeOfMaterial">
-                        <ui-select ng-model="tableParams.filter().typeOfMaterial">
+                        <ui-select ng-model="tableParams.filter().typeOfMaterial" ng-disabled="!selectedCity">
                             <ui-select-match allow-clear="true" placeholder="{{$select.selected.displayValue || 'Виберіть Тип Матеріалу...'}}">{{$select.selected.displayValue}}</ui-select-match>
                             <ui-select-choices repeat="item.filter as item in materialTypes | filter: {displayValue: $select.search}">
                                 <span title="{{item.displayValue}}" ng-bind-html="item.displayValue | highlight: $select.search"></span>
@@ -43,7 +48,7 @@
                     <label for="totalArea">Загальна Площа</label>
 
                     <div id="totalArea">
-                        <ui-select ng-model="tableParams.filter().totalArea">
+                        <ui-select ng-model="tableParams.filter().totalArea" ng-disabled="!selectedCity">
                             <ui-select-match allow-clear="true" placeholder="{{$select.selected.displayValue || 'Виберіть Загальну Площу...'}}">{{$select.selected.displayValue}}</ui-select-match>
                             <ui-select-choices repeat="item.filter as item in areaIntervals | filter: {displayValue: $select.search}">
                                 <span title="{{item.displayValue}}" ng-bind-html="item.displayValue | highlight: $select.search"></span>
@@ -55,7 +60,7 @@
                     <label for="livingSpace">Жила Площа</label>
 
                     <div id="livingSpace">
-                        <ui-select ng-model="tableParams.filter().livingSpace">
+                        <ui-select ng-model="tableParams.filter().livingSpace" ng-disabled="!selectedCity">
                             <ui-select-match allow-clear="true" placeholder="{{$select.selected.displayValue || 'Виберіть Жилу Площу...'}}">{{$select.selected.displayValue}}</ui-select-match>
                             <ui-select-choices repeat="item.filter as item in areaIntervals | filter: {displayValue: $select.search}">
                                 <span title="{{item.displayValue}}" ng-bind-html="item.displayValue | highlight: $select.search"></span>
@@ -67,64 +72,69 @@
         </div>
     </div>
 
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-if="selectedCity">
         <div class="panel-body">
             <div class="row statistics">
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.min_price | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.min_price | currency:'₴') || '-'"></div>
                     <div class="statistics-label">найменша ціна</div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.max_price | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.max_price | currency:'₴') || '-'"></div>
                     <div class="statistics-label">найбільша ціна</div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.avg_price | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.avg_price | currency:'₴') || '-'"></div>
                     <div class="statistics-label">середня ціна</div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.price_25_percentiles | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.price_25_percentiles | currency:'₴') || '-'"></div>
                     <div class="statistics-label">ціна 25-го процентилю</div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.price_75_percentiles | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.price_75_percentiles | currency:'₴') || '-'"></div>
                     <div class="statistics-label">ціна 75-го процентилю</div>
                 </div>
             </div>
             <div class="row statistics">
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.min_pricePerSquareMeter | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.min_pricePerSquareMeter | currency:'₴') || '-'"></div>
                     <div class="statistics-label">найменша ціна за кв. метр</div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.max_pricePerSquareMeter | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.max_pricePerSquareMeter | currency:'₴') || '-'"></div>
                     <div class="statistics-label">найбільша ціна за кв. метр</div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.avg_pricePerSquareMeter | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.avg_pricePerSquareMeter | currency:'₴') || '-'"></div>
                     <div class="statistics-label">середня ціна за кв. метр</div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.pricePerSquareMeter_25_percentiles | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.pricePerSquareMeter_25_percentiles | currency:'₴') || '-'"></div>
                     <div class="statistics-label">ціна 25-го процентилю за кв. метр</div>
                 </div>
                 <div class="col-lg-2">
-                    <div class="value" ng-bind="statistics.pricePerSquareMeter_75_percentiles | currency:'₴'"></div>
+                    <div class="value" ng-bind="(statistics.pricePerSquareMeter_75_percentiles | currency:'₴') || '-'"></div>
                     <div class="statistics-label">ціна 75-го процентилю за кв. метр</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <table ng-table="tableParams" class="table table-bordered table-striped">
-        <tr ng-repeat="row in $data" data-container="body" data-placement="top" data-content="{{row.content}}" data-trigger="hover" bs-popover>
-            <td data-title="'Місто'">{{row.city}}</td>
-            <td data-title="'Кількість Кімнат'">{{row.numberOfRooms}}</td>
-            <td data-title="'Тип Матеріалу'">{{row.typeOfMaterial}}</td>
-            <td data-title="'Поверх'">{{row.floor}}</td>
-            <td data-title="'Площу'">{{row.totalArea}}</td>
-            <td data-title="'Ціна'" sortable="'price'">{{row.price}}</td>
-            <td data-title="'Ціна за кв. м.'" sortable="'pricePerSquareMeter'">{{row.pricePerSquareMeter}}</td>
-        </tr>
-    </table>
+    <div ng-if="selectedCity">
+        <table ng-table="tableParams" class="table table-bordered table-striped">
+            <tr ng-repeat="row in $data" data-container="body" data-placement="top" data-content="{{row.content}}" data-trigger="hover" bs-popover>
+                <td data-title="'Місто'">{{row.city}}</td>
+                <td data-title="'Кількість Кімнат'">{{row.numberOfRooms}}</td>
+                <td data-title="'Тип Матеріалу'">{{row.typeOfMaterial}}</td>
+                <td data-title="'Поверх'">{{row.floor}}</td>
+                <td data-title="'Площа'">{{row.totalArea}}</td>
+                <td data-title="'Ціна'" sortable="'price'">{{row.price}}</td>
+                <td data-title="'Ціна за кв. м.'" sortable="'pricePerSquareMeter'">{{row.pricePerSquareMeter}}</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-lg-12" ng-if="!selectedCity">
+        <h1>Для початку виберіть місто!</h1>
+    </div>
 </div>

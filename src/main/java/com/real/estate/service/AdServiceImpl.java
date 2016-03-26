@@ -3,8 +3,8 @@ package com.real.estate.service;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.real.estate.domain.Ad;
 import com.real.estate.domain.City;
-import com.real.estate.parser.impl.OtidoParser;
 import com.real.estate.parser.Parser;
+import com.real.estate.parser.impl.OtidoParser;
 import com.real.estate.repository.AdSearchRepository;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.real.estate.utils.Constants.*;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
@@ -30,19 +31,8 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Service
 public class AdServiceImpl implements AdService {
 
-    public static final String MATCH_FILTER = "match";
-    public static final String RANGE_FILTER = "range";
-
-    public static final String TYPE_PROP = "type";
-    public static final String VALUE_PROP = "value";
-    public static final String FROM_PROP = "from";
-    public static final String TO_PROP = "to";
-
     @Autowired
     private AdSearchRepository adSearchRepository;
-
-//    @Autowired
-//    private ElasticsearchTemplate elasticsearchTemplate;
 
     @Transactional
     public void indexAds(City city) {
@@ -68,41 +58,29 @@ public class AdServiceImpl implements AdService {
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withQuery(matchAllQuery())
                 .withQuery(boolQueryBuilder)
-                .addAggregation(getMinBuilder("price"))
-                .addAggregation(getMaxBuilder("price"))
-                .addAggregation(getAvgBuilder("price"))
-                .addAggregation(get25PercentilesBuilder("price"))
-                .addAggregation(get75PercentilesBuilder("price"))
-                .addAggregation(getMinBuilder("pricePerSquareMeter"))
-                .addAggregation(getMaxBuilder("pricePerSquareMeter"))
-                .addAggregation(getAvgBuilder("pricePerSquareMeter"))
-                .addAggregation(get25PercentilesBuilder("pricePerSquareMeter"))
-                .addAggregation(get75PercentilesBuilder("pricePerSquareMeter"))
+                .addAggregation(getMinBuilder(PRICE_FIELD))
+                .addAggregation(getMaxBuilder(PRICE_FIELD))
+                .addAggregation(getAvgBuilder(PRICE_FIELD))
+                .addAggregation(get25PercentilesBuilder(PRICE_FIELD))
+                .addAggregation(get75PercentilesBuilder(PRICE_FIELD))
+                .addAggregation(getMinBuilder(PRICE_PER_SQUARE_METER_FIELD))
+                .addAggregation(getMaxBuilder(PRICE_PER_SQUARE_METER_FIELD))
+                .addAggregation(getAvgBuilder(PRICE_PER_SQUARE_METER_FIELD))
+                .addAggregation(get25PercentilesBuilder(PRICE_PER_SQUARE_METER_FIELD))
+                .addAggregation(get75PercentilesBuilder(PRICE_PER_SQUARE_METER_FIELD))
                 .withPageable(pageable)
                 .build();
-
-//        Aggregations aggregations = elasticsearchTemplate.query(searchQuery, new ResultsExtractor<Aggregations>() {
-//            @Override
-//            public Aggregations extract(SearchResponse response) {
-//                return response.getAggregations();
-//            }
-//        });
-//        SearchResponse response = elasticsearchTemplate.query(searchQuery, new ResultsExtractor<SearchResponse>() {
-//            @Override
-//            public SearchResponse extract(SearchResponse response) {
-//                return response;
-//            }
-//        });
 
         return adSearchRepository.search(searchQuery);
     }
 
     private Parser<Ad> determineParser(City city) throws ValidationException {
         switch (city) {
-            case Cherkasy: new OtidoParser();
+            case Cherkasy:
+                return new OtidoParser();
         }
 
-        throw new ValidationException("Непідтримуване місто");
+        throw new ValidationException(UNSUPPORTED_CITY);
     }
 
     private void prepareQueryBuilder(BoolQueryBuilder boolQueryBuilder, Map.Entry<String, JsonNode> entry) {
@@ -122,22 +100,24 @@ public class AdServiceImpl implements AdService {
     }
 
     private AbstractAggregationBuilder getMinBuilder(String fieldName) {
-        return AggregationBuilders.min(String.format("min_%s", fieldName)).field(fieldName);
+        return AggregationBuilders.min(String.format(MIN_AGGREGATION_NAME, fieldName)).field(fieldName);
     }
 
     private AbstractAggregationBuilder getMaxBuilder(String fieldName) {
-        return AggregationBuilders.max(String.format("max_%s", fieldName)).field(fieldName);
+        return AggregationBuilders.max(String.format(MAX_AGGREGATION_NAME, fieldName)).field(fieldName);
     }
 
     private AbstractAggregationBuilder getAvgBuilder(String fieldName) {
-        return AggregationBuilders.avg(String.format("avg_%s", fieldName)).field(fieldName);
+        return AggregationBuilders.avg(String.format(AVG_AGGREGATION_NAME, fieldName)).field(fieldName);
     }
 
     private AbstractAggregationBuilder get25PercentilesBuilder(String fieldName) {
-        return AggregationBuilders.percentiles(String.format("%s_25_percentiles", fieldName)).field(fieldName).percentiles(25);
+        return AggregationBuilders.percentiles(String.format(PERCENTILES_25_AGGREGATION_NAME, fieldName))
+                .field(fieldName).percentiles(PERCENTILES_25);
     }
 
     private AbstractAggregationBuilder get75PercentilesBuilder(String fieldName) {
-        return AggregationBuilders.percentiles(String.format("%s_75_percentiles", fieldName)).field(fieldName).percentiles(75);
+        return AggregationBuilders.percentiles(String.format(PERCENTILES_75_AGGREGATION_NAME, fieldName))
+                .field(fieldName).percentiles(PERCENTILES_75);
     }
 }

@@ -30,8 +30,7 @@ repositories {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-//	compile('org.springframework.boot:spring-boot-starter-jdbc')
+//	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-elasticsearch')
 
@@ -39,10 +38,8 @@ dependencies {
 	compile('com.fasterxml.jackson.core:jackson-databind:2.7.3')
 	compile('com.fasterxml.jackson.core:jackson-annotations:2.7.3')
 
-
 	compile('org.jsoup:jsoup:1.8.3')
 
-	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test') 
 }
 

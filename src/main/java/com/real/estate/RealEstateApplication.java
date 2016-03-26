@@ -11,13 +11,13 @@ import org.springframework.data.elasticsearch.core.convert.ElasticsearchConverte
 @SpringBootApplication
 public class RealEstateApplication {
 
-	@Bean
-	public ElasticsearchTemplate elasticsearchTemplate(Client client, ElasticsearchConverter converter) {
-		CustomDefaultResultMapper mapper = new CustomDefaultResultMapper(converter.getMappingContext());
-		return new ElasticsearchTemplate(client, converter, mapper);
-	}
+    @Bean
+    public ElasticsearchTemplate elasticsearchTemplate(Client client, ElasticsearchConverter converter) {
+        CustomDefaultResultMapper mapper = new CustomDefaultResultMapper(converter.getMappingContext());
+        return new ElasticsearchTemplate(client, converter, mapper);
+    }
 
-	public static void main(String[] args) {
-		SpringApplication.run(RealEstateApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(RealEstateApplication.class, args);
+    }
 }

@@ -1,5 +1,5 @@
-angular.module('app').controller('IndexingController', ['$scope', '$state', 'AdService',
-    function ($scope, $state, AdService) {
+angular.module('app').controller('IndexingController', ['$scope', 'growl', 'AdService',
+    function ($scope, growl, AdService) {
         'use strict';
 
         $scope.init = function () {
@@ -19,7 +19,9 @@ angular.module('app').controller('IndexingController', ['$scope', '$state', 'AdS
             $scope.indexingInProgress = true;
             AdService.index($scope.selectedCity).then(function () {
                 $scope.indexingInProgress = false;
-            })
+            }, function (response) {
+                growl.error(response.data.message);
+            });
         };
 
     }]);

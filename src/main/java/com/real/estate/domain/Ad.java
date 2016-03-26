@@ -11,6 +11,8 @@ import java.io.Serializable;
 @Document(indexName = "ads")
 public class Ad implements Serializable {
     @Id
+    private String id;
+
     private String content;
 
     private City city;

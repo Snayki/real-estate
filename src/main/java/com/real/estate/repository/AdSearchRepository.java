@@ -10,8 +10,9 @@ import org.springframework.stereotype.Repository;
  * Created by Snayki on 22.03.2016.
  */
 @Repository
-public interface AdSearchRepository extends ElasticsearchRepository<Ad, Long> {
-     void deleteByCity(String city);
+public interface AdSearchRepository extends ElasticsearchRepository<Ad, String> {
 
-     CustomFacetedPage<Ad> search(SearchQuery searchQuery);
+    void deleteByCity(String city);
+
+    CustomFacetedPage<Ad> search(SearchQuery searchQuery);
 }

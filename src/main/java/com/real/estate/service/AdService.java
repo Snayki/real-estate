@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
  * Created by Snayki on 22.03.2016.
  */
 public interface AdService {
+
     void indexAds(City city);
 
     Page<Ad> findAll(Pageable pageable, JsonNode query);

@@ -15,6 +15,7 @@ import java.util.List;
  * Created by Snayki on 25.03.2016.
  */
 public class CustomDefaultResultMapper extends DefaultResultMapper {
+
     public CustomDefaultResultMapper(MappingContext<? extends ElasticsearchPersistentEntity<?>, ElasticsearchPersistentProperty> mappingContext) {
         super(mappingContext);
     }
