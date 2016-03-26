@@ -52,7 +52,7 @@ public enum Material {
     }
 
     public static List<Material> getAll() {
-        return Arrays.asList(Brick, Panel, Monolith);
+        return Arrays.asList(Brick, Panel, Monolith, Unknown);
     }
 
     public static Material materialOf(String code) {
